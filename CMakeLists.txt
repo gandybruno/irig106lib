@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
-project(irig106 C)
+project(irig106 C CXX)
 
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
@@ -20,52 +20,15 @@ endif()
 
 
 
+include_directories(include)
 
 
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "src/irig106dll.def"
-)
-source_group("" FILES ${no_group_source_files})
 
-set(Headers
-    "src/config.h"
-    "src/i106_data_stream.h"
-    "src/i106_decode_1394.h"
-    "src/i106_decode_1553f1.h"
-    "src/i106_decode_16pp194.h"
-    "src/i106_decode_arinc429.h"
-    "src/i106_decode_can.h"
-    "src/i106_decode_comp_gen_0.h"
-    "src/i106_decode_discrete.h"
-    "src/i106_decode_ethernet.h"
-    "src/i106_decode_events.h"
-    "src/i106_decode_image.h"
-    "src/i106_decode_index.h"
-    "src/i106_decode_message.h"
-    "src/i106_decode_parallel.h"
-    "src/i106_decode_pcmf1.h"
-    "src/i106_decode_time.h"
-    "src/i106_decode_tmats.h"
-    "src/i106_decode_tmats_b.h"
-    "src/i106_decode_tmats_c.h"
-    "src/i106_decode_tmats_common.h"
-    "src/i106_decode_tmats_d.h"
-    "src/i106_decode_tmats_g.h"
-    "src/i106_decode_tmats_m.h"
-    "src/i106_decode_tmats_p.h"
-    "src/i106_decode_tmats_r.h"
-    "src/i106_decode_uart.h"
-    "src/i106_decode_video.h"
-    "src/i106_index.h"
-    "src/i106_time.h"
-    "src/irig106ch10.h"
-    "src/irig106cl.h"
-    "src/sha-256.h"
-)
-source_group("Headers" FILES ${Headers})
+file(GLOB HEADERS "include/*.h")
+
 
 set(Sources
     "src/i106_data_stream.c"
@@ -95,14 +58,6 @@ set(Sources
 )
 source_group("Sources" FILES ${Sources})
 
-set(ALL_FILES
- #   ${no_group_source_files}
-    ${Headers}
-    ${Sources}
-)
-
-
-
 
 ################################################################################
 # Dependencies
@@ -123,12 +78,23 @@ endif()
 ################################################################################
 # Target
 ################################################################################
-add_library("${PROJECT_NAME}_SHARED" SHARED  ${ALL_FILES})
-add_library("${PROJECT_NAME}_STATIC" STATIC  ${ALL_FILES})
+
+add_library(${PROJECT_NAME} OBJECT  ${Sources})
+
+
+add_library("${PROJECT_NAME}_SHARED" SHARED  $<TARGET_OBJECTS:${PROJECT_NAME}>)
+add_library("${PROJECT_NAME}_STATIC" STATIC  $<TARGET_OBJECTS:${PROJECT_NAME}>)
+
+#set_target_properties("${PROJECT_NAME}_SHARED" PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
+#set_target_properties("${PROJECT_NAME}_STATIC" PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
 
 
 target_link_libraries("${PROJECT_NAME}_SHARED" PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 target_link_libraries("${PROJECT_NAME}_STATIC" PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-#install(TARGETS "${PROJECT_NAME}_SHARED" DESTINATION ${PROJECT_SOURCE_DIR})
-#install(TARGETS "${PROJECT_NAME}_STATIC" DESTINATION ${PROJECT_SOURCE_DIR})
+set_target_properties("${PROJECT_NAME}_SHARED" PROPERTIES PUBLIC_HEADER "${HEADERS}")
+set_target_properties("${PROJECT_NAME}_STATIC" PROPERTIES PUBLIC_HEADER "${HEADERS}")
+
+
+install(TARGETS "${PROJECT_NAME}_SHARED" PUBLIC_HEADER  DESTINATION ${PROJECT_SOURCE_DIR}/dist)
+install(TARGETS "${PROJECT_NAME}_STATIC" PUBLIC_HEADER  DESTINATION ${PROJECT_SOURCE_DIR}/dist)
