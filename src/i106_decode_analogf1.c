@@ -367,8 +367,8 @@ EnI106Status I106_CALL_DECL Set_Attributes_AnalogF1(SuRDataSource * psuRDataSrc,
        psuAnalogF1_Attributes->szSampleRate = strtoull(psuRDataSrc->suAnalog.szSampleRate, NULL, 10);
     
     //Get whether data is packed
-    if(psuRDataSrc->suAnalog->szDataPacking != NULL)
-        psuAnalogF1_Attributes->bAnalogIsDataPacked = (psuRDataSrc->suAnalog->szDataPacking[0] == 'T';
+    if(psuRDataSrc->suAnalog.szDataPacking != NULL)
+        psuAnalogF1_Attributes->bAnalogIsDataPacked = (psuRDataSrc->suAnalog->szDataPacking[0] == 'T');
 
     //Get size of a data sample on this channel
     if(psuRDataSrc->suAnalog->szAnalogDataLength != NULL)
