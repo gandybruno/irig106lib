@@ -98,3 +98,28 @@ set_target_properties("${PROJECT_NAME}_STATIC" PROPERTIES PUBLIC_HEADER "${HEADE
 
 install(TARGETS "${PROJECT_NAME}_SHARED" PUBLIC_HEADER  DESTINATION ${PROJECT_SOURCE_DIR}/dist)
 install(TARGETS "${PROJECT_NAME}_STATIC" PUBLIC_HEADER  DESTINATION ${PROJECT_SOURCE_DIR}/dist)
+
+
+add_subdirectory(external/unity)
+include_directories(external/unity/src)
+include_directories(external/unity/extras/fixture/src)
+include_directories(external/unity/extras/memory/src)
+
+# Test runner (includes unity and test suite)
+#file(GLOB TESTS "tests/test_vi*.c")
+
+set(Tests
+    "tests/all_tests.c"
+    "tests/test_1553.c"
+    "tests/test_video.c"
+)
+source_group("Tests" FILES ${Tests})
+
+add_executable(test_runner
+    tests/all_tests.c
+    external/unity/src/unity.c
+    external/unity/extras/fixture/src/unity_fixture.c
+    external/unity/extras/memory/src/unity_memory.c
+    ${Tests}
+)
+target_link_libraries(test_runner "${PROJECT_NAME}_STATIC" unity)

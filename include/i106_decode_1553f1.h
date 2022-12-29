@@ -34,7 +34,7 @@
  of this software, even if advised of the possibility of such damage.
 
  ****************************************************************************/
-
+#include <irig106ch10.h>
 #ifndef _I106_DECODE_1553F1_H
 #define _I106_DECODE_1553F1_H
 
@@ -108,7 +108,7 @@ typedef union
 
 /* 1553 Format 1 */
 
-/// MIL-STD-1553 Channel Specific Data Word
+/// MIL-STD-1553 Channel Specific header Data Word
 typedef struct 
     {
     uint32_t    uMsgCnt      : 24;      ///< Message count
@@ -245,6 +245,11 @@ EnI106Status I106_CALL_DECL
 EnI106Status I106_CALL_DECL 
     enI106_Decode_Next1553F1(Su1553F1_CurrMsg * psuMsg);
 
+/**
+ * @brief Return the number of word in a 1553 message taking into account mode codes
+ * @param command_word command Word
+ * @return Return number of word
+*/
 int I106_CALL_DECL 
     i1553WordCnt(const SuCmdWordU * psuCmdWord);
 

@@ -1,6 +1,6 @@
 /****************************************************************************
 
- i106_decode_1553f1.c - 
+ i106_decode_1553f1.c -
 
  Copyright (c) 2005 Irig106.org
 
@@ -238,11 +238,11 @@ char * szCmdWord(unsigned int iCmdWord)
     }
 
 
-
-/* ------------------------------------------------------------------------ */
-
-/* Return the number of word in a 1553 message taking into account mode codes */
-
+/**
+ * @brief Return the number of word in a 1553 message taking into account mode codes
+ * @param command_word command Word
+ * @return Return number of word
+*/
 int I106_CALL_DECL 
     i1553WordCnt(const SuCmdWordU * psuCmdWord)
     {

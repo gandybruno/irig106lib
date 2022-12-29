@@ -35,6 +35,7 @@
 
  ****************************************************************************/
 
+#include <irig106ch10.h>
 #ifndef _I106_DECODE_VIDEO_H
 #define _I106_DECODE_VIDEO_H
 
@@ -62,11 +63,15 @@ extern "C" {
 /* Video Format 0 */
 
 /// Video Format 0 Channel Specific Data Word
+
+/// <summary>
+/// 
+/// </summary>
 typedef struct 
     {
     uint32_t    Reserved     : 23;
     uint32_t    uBA          :  1;      ///< Byte alignment
-    uint32_t    uType        :  4;      ///< Payload type
+    uint32_t    uType        :  4;      ///< Payload type Mpgeg2 or h264
     uint32_t    bKLV         :  1;      ///< KLV present
     uint32_t    bSRS         :  1;      ///< SCR/RTC Sync
     uint32_t    bIPH         :  1;      ///< Intra-Packet Header
@@ -210,6 +215,13 @@ typedef struct
  * --------------------
  */
 
+ /// <summary>
+ /// Setup reading multiple Video Format 0 message
+ /// </summary>
+ /// <param name="psuHeader"></param>
+ /// <param name="pvBuff"></param>
+ /// <param name="psuCurrMsg"></param>
+ /// <returns></returns>
 EnI106Status I106_CALL_DECL 
     enI106_Decode_FirstVideoF0(SuI106Ch10Header  * psuHeader,
                                void              * pvBuff,

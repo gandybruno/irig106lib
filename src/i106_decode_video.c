@@ -76,10 +76,13 @@ namespace Irig106 {
 
 
 
-/* ======================================================================= */
-
-/// Setup reading multiple Video Format 0 messages
-
+/// <summary>
+/// Setup reading multiple Video Format 0 message
+/// </summary>
+/// <param name="psuHeader"></param>
+/// <param name="pvBuff"></param>
+/// <param name="psuCurrMsg"></param>
+/// <returns></returns>
 EnI106Status I106_CALL_DECL 
     enI106_Decode_FirstVideoF0(SuI106Ch10Header  * psuHeader,
                                void              * pvBuff,
